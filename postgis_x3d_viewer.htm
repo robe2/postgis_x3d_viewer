@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="js/colorpicker/css/colorpicker.css" type="text/css" />
 <link rel="stylesheet" type="text/css"
 href="x3dom.css" />
-<script type="text/javascript" src="js/x3dom.js"></script>
+<script type="text/javascript" src="js/x3dom-full.js"></script>
     <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
     <!--http://www.eyecon.ro/colorpicker -->
     <script type="text/javascript" src="js/colorpicker/js/colorpicker.js"></script>
@@ -34,7 +34,7 @@ href="x3dom.css" />
 </head>
 <body>
 	<h1>Minimalist PostGIS Spatial Query Web X3D Viewer</h1> 
-    <form><input type="hidden" id="txtbands"  value="255,0,0" /><blockquote>Use mouse and mouse scroll wheel to move in and around the scene</blockquote>
+    <form><input type="hidden" id="txtbands"  value="255,0,0" /><b>Detailed instructions at <a href="http://www.x3dom.org/?page_id=293" target="_blank">X3Dom camera navigation</a></b><blockquote>Use mouse and mouse scroll wheel to move in and around the scene. <b>a</b> show all in scene, <b>u</b> upright, <b>r</b> reset position</blockquote>
     	<b>The Expression is of type:</b> <select id="spatial_type"><option value="geometry" selected>Geometry</option><option value="raw">Raw</option></select>
         <table>
         	<tr><td><textarea id="txtsql" name="txtsql" runat="server" rows="8" cols="100" style="font-size:12px;font-family:Courier">ST_Scale(ST_GeomFromText('POLYHEDRALSURFACE Z( ((0 0 0, 0 0 1, 0 1 1, 0 1 0, 0 0 0)), 

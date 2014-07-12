@@ -9,7 +9,7 @@ $$
       IF param_spatial_type = 'geometry' THEN
 		EXECUTE 'WITH data AS (SELECT (' || var_sql || ') AS geom ) SELECT geom FROM data;' INTO STRICT var_geom;
 		
-        SELECT '<Transform center=''' || ST_xMax(BOX3D(var_geom)) || ' ' || ST_ZMax(BOX3D(var_geom)) || ' 0'' >
+        SELECT '<Transform>
 <Shape><Appearance containerField=''appearance''>
    <Material 
     containerField=''material''
@@ -30,10 +30,10 @@ $$
 
 
 
-SELECt postgis_viewer_x3d('SELECT ST_Buffer(''MULTIPOINT((1 2),(3 4),(5 6))''::geometry,1)');
+/** SELECt postgis_viewer_x3d('SELECT ST_Buffer(''MULTIPOINT((1 2),(3 4),(5 6))''::geometry,1)');
 
 SELECt postgis_viewer_x3d('SELECT ST_Extrude(ST_Buffer(''MULTIPOINT((1 2),(3 4),(5 6))''::geometry,20),0,0,50)');
 
-SELECT ST_Extrude(ST_Buffer('MULTIPOINT((1 2),(3 4),(5 6))'::geometry,20),0,0,50)
+SELECT ST_Extrude(ST_Buffer('MULTIPOINT((1 2),(3 4),(5 6))'::geometry,20),0,0,50);  **/
 
 
