@@ -8,7 +8,7 @@ or PHP.  It is a loose wrapper around the PostGIS ST_AsX3D function ([http://pos
 Requirements
 --------------
  1. PostGIS 2.0+ (PostGIS 2.1+ with SFCGAL is preferred).  
-    Note: if you are on windows, we do have ([http://postgis.net/windows_downloads][experimental windows binaries]) for upcoming PostGIS 2.2
+    Note: if you are on windows, we do have http://postgis.net/windows_downloads for upcoming PostGIS 2.2
 	that have SFCGAL https://github.com/Oslandia/SFCGAL built-in.
  2. A webserver supporting PHP or ASP.NET 2+.
  
@@ -33,7 +33,7 @@ Caveats
  1. The viewer handles only two types of queries -- Geometry which means the query results in a single geometry back
     or raw  which means the query returns a chunk of X3D that can be stuffed into a scene.
  2. Only 3D types are handled at the moment.  There will be more in future.  This is because of current limitation in ST_AsX3D
-    which I have documented here: ([http://trac.osgeo.org/postgis/ticket/2838]) and is sort of detailed in Manual
+    which I have documented here: http://trac.osgeo.org/postgis/ticket/2838 and is sort of detailed in Manual
 	http://postgis.net/docs/ST_AsX3D.html
 	
 
