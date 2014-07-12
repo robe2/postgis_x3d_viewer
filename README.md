@@ -15,18 +15,19 @@ Requirements
 Getting started
 ---------------
  1. Download the source for this.
- 2. If you are using ASP.Net, you'll need to get Npgsql.net driver 
+ 2. In your database that already has PostGIS installed, run the tox3d.sql script.
+ 3. If you are using ASP.Net, you'll need to get Npgsql.net driver 
     from http://npgsql.projects.pgfoundry.org/
 
 	If you are using PHP, make sure to have the PostgreSQL drivers enabled in your ini
- 3. There are 3 server side query handler helper files GetX3D.php, GetX3DCS.ashx, GetX3D.ashx
+ 4. There are 3 server side query handler helper files GetX3D.php, GetX3DCS.ashx, GetX3D.ashx
     Depending on which one you want to use, edit the postgis_x3d_viewer.htm file and replace 
 	``var postgis_handler = "GetX3D.php";``  
 	 
 	 with the one you want to use.
 	
- 4. Edit the config.inc.php (if using PHP) or the web.config (if using ASP.NET) filling in your database credentials
- 5. Once you have made the changes you should be able to launch the postgis_x3d_viewer.htm on your web server and should be good to go.
+ 5. Edit the config.inc.php (if using PHP) or the web.config (if using ASP.NET) filling in your database credentials
+ 6. Once you have made the changes you should be able to launch the postgis_x3d_viewer.htm on your web server and should be good to go.
 
 Caveats
 --------------- 
