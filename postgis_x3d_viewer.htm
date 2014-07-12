@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- version 0.1 2014-07-12-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>PostGIS Minimalist 3D Spatial Query Viewer</title>
+    <link rel="stylesheet" href="js/colorpicker/css/colorpicker.css" type="text/css" />
+<link rel="stylesheet" type="text/css"
+href="x3dom.css" />
+<script type="text/javascript" src="js/x3dom.js"></script>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <!--http://www.eyecon.ro/colorpicker -->
+    <script type="text/javascript" src="js/colorpicker/js/colorpicker.js"></script>
+    <style>H1 {font-family:Verdana;color:midnight-blue;font-size:large}</style>
+   
+    <script type="text/javascript">
+        var postgis_handler = "GetX3D.php";
+        function showQuery() {
+            $('#querylog').prepend('<hr/>' + $('#txtsql').val()); //append last query run
+            $.post(postgis_handler,  { bvals: $('#txtbands').val(), sql: $('#txtsql').val(), spatial_type: $('#spatial_type').val() } ).done(
+               function (data) {
+                   $("scene").append(data);
+                 
+                } ) ;
+            
+        }
+
+        function clearResults() {
+            $("scene").html("")
+        }
+        function clearQueryLog() {
+            $("#querylog").html("")
+        }
+    </script>
+</head>
+<body>
+	<h1>Minimalist PostGIS Spatial Query Web X3D Viewer</h1> 
+    <form><input type="hidden" id="txtbands"  value="255,0,0" /><blockquote>Use mouse and mouse scroll wheel to move in and around the scene</blockquote>
+    	<b>The Expression is of type:</b> <select id="spatial_type"><option value="geometry" selected>Geometry</option><option value="raw">Raw</option></select>
+        <table>
+        	<tr><td><textarea id="txtsql" name="txtsql" runat="server" rows="8" cols="100" style="font-size:12px;font-family:Courier">ST_Scale(ST_GeomFromText('POLYHEDRALSURFACE Z( ((0 0 0, 0 0 1, 0 1 1, 0 1 0, 0 0 0)), 
+		((0 0 0, 0 1 0, 1 1 0, 1 0 0, 0 0 0)), ((0 0 0, 1 0 0, 1 0 1, 0 0 1, 0 0 0)), 
+		((1 1 0, 1 1 1, 1 0 1, 1 0 0, 1 1 0)), 
+		((0 1 0, 0 1 1, 1 1 1, 1 1 0, 0 1 0)), ((0 0 1, 1 0 1, 1 1 1, 0 1 1, 0 0 1)) )'),20,20,20)</textarea></td>
+        		<td><input type="checkbox" onclick="$('#tdQlog').toggle();$('#thQLog').toggle()" checked/>Show Query Log &nbsp;<input type="checkbox" onclick="$('#colorSelector').toggle()" checked/>color pick<div id="colorSelector" ><div></div></div></td>
+        	</tr>
+        </table>	
+<script type="text/javascript">
+	$('#colorSelector').ColorPicker({ flat: true,
+		color: '#ff0000',
+		onShow: function (colpkr) {
+			$(colpkr).fadeIn(500);
+			return false;
+		},
+		onHide: function (colpkr) {
+			$(colpkr).fadeOut(500);
+			return false;
+		},
+		onChange: function (hsb, hex, rgb) {
+			if (!isNaN(rgb.r)) {
+				$('#txtbands').val(rgb.r + ',' + rgb.g + ',' + rgb.b);
+			}
+		}
+	});
+</script>
+        <input type="button" id="cmdShow" value="Show Query" onclick="showQuery()" />
+        <input type="button" id="cmdClearResults" value="Clear Results" onclick="clearResults()" />
+        <input type="button" id="cmdClearQueryLog" value="Clear Query History" onclick="clearQueryLog()" />
+    </form>
+    <table width="100%">
+    <tr style='background-color:ThreeDDarkShadow;color:white'><th>Results</th><th id="thQLog">Query History</th></tr>
+    <tr><td><div id="result" style="width:60%"><x3d width="800px" height="600px">
+<scene>
+<NavigationInfo type='"EXAMINE" "WALK" "FLY" "ANY"'/> 
+</scene>
+</x3d></div></td>
+    	   <td id="tdQLog" style="width:40%"><div id="querylog" style='font-family:Courier;font-size:small;overflow-y:scroll;width:100%;height:600px'></div></td></tr>
+    </table>
+
+
+</body>
+</html>
