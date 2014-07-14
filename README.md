@@ -17,7 +17,7 @@ Getting started
  1. Download the source for this.
  2. In your database that already has PostGIS installed, run the tox3d.sql script.
  3. If you are using ASP.Net, you'll need to get Npgsql.net driver 
-    from http://npgsql.projects.pgfoundry.org/
+    from http://npgsql.projects.pgfoundry.org/ and copy into the Bin folder
 
 	If you are using PHP, make sure to have the PostgreSQL drivers enabled in your ini
  4. There are 3 server side query handler helper files GetX3D.php, GetX3DCS.ashx, GetX3D.ashx
@@ -37,7 +37,30 @@ Caveats
     which I have documented here: http://trac.osgeo.org/postgis/ticket/2838 and is sort of detailed in Manual
 	http://postgis.net/docs/ST_AsX3D.html
 	
+Examples
+----------
+Refer to: http://www.bostongis.com/blog/index.php?/archives/229-PostGIS-Minimalist-X3D-Viewer-for-PHP-and-ASP.NET.html
 
+SELECT ST_Translate(
+ ST_Extrude(
+   ST_Buffer(
+  (SELECT 
+    ST_Collect( ST_Rotate('LINESTRING(10 20, 30 40, 50 65)'::geometry, pi()*i/2
+     , ST_Point(10, 20)) ) 
+      FROM generate_series(0,2,2) As i ), 1), 0, 0, 2), 0, 0,6);  --color 8f7a53
+
+SELECT ST_Extrude(ST_Buffer(ST_Union(
+   ST_Point(10, 20), ST_Point(5, 5)), 10, 'quad_segs=48'),
+     0, 0, 10); -- color f2553d
+
+SELECT ST_Translate(
+   ST_Extrude(ST_Buffer(ST_Point(10, 20), 20, 'quad_segs=4'),
+   0, 0, 2),0,0,10);  -- color this blue 287c80
+
+SELECT ST_Translate(ST_Extrude(ST_Buffer(ST_Point(10, 20), 3), 
+  0, 0, 2),0,0,11);
+  
+  
 Support
 ------------
 If you have questions comments or run into issues, please post to the ([postgis-users][]) mailing list.
