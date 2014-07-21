@@ -86,14 +86,15 @@ SELECT  '<Shape>
 </Shape>';
 ```
 
-A pyramid
+A pyramid - to minimize on needing to escape single quotes you can use double quotes in X3D snippet
+as shown here
 ```
 SELECT  '<Shape>
-        <IndexedFaceSet coordIndex=''0 1 2 -1 1 3 2 -1 2 3 0 -1 3 1 0''>
-          <Coordinate point=''0 0 0 10 0 0 5 0 8.3 5 8.3 2.8''/>
+        <IndexedFaceSet coordIndex="0 1 2 -1 1 3 2 -1 2 3 0 -1 3 1 0">
+          <Coordinate point="0 0 0 10 0 0 5 0 8.3 5 8.3 2.8"/>
         </IndexedFaceSet>
         <Appearance>
-          <Material diffuseColor=''0.8 0.8 0.2'' specularColor=''0 0 0.5''/>
+          <Material diffuseColor="0.8 0.8 0.2" specularColor="0 0 0.5"/>
         </Appearance>
       </Shape>'
 ```
