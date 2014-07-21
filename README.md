@@ -73,8 +73,10 @@ SELECT ST_Translate(ST_Extrude(ST_Buffer(ST_Point(10, 20), 3),
   
 Use Raw mode for these examples
 --------------------------------
-Note for Raw mode, you need to escape single quotes ' with two single quotes ''
+Note for Raw mode, you need to escape single quotes ' with two single quotes ''.
+Also the selected color in the color picker is ignored and its up to you to include in your raw if needed.
 
+Set of rainbow triangles
 ```
 SELECT  '<Shape>
 <IndexedTriangleSet index=''0 1 2 3 4 5 6 7 8'' solid=''false'' ccw=''true'' colorPerVertex=''true'' normalPerVertex=''true'' containerField=''geometry''>
@@ -82,6 +84,18 @@ SELECT  '<Shape>
 <Color color=''0 0.8 0 0 1 1 1 0 0 1 0.5 0 0.8 0 1 1 1 0 0.6 0.3 0.1 1 0 0.5 0 1 0.5''/>
 </IndexedTriangleSet>
 </Shape>';
+```
+
+A pyramid
+```
+SELECT  '<Shape>
+        <IndexedFaceSet coordIndex=''0 1 2 -1 1 3 2 -1 2 3 0 -1 3 1 0''>
+          <Coordinate point=''0 0 0 10 0 0 5 0 8.3 5 8.3 2.8''/>
+        </IndexedFaceSet>
+        <Appearance>
+          <Material diffuseColor=''0.8 0.8 0.2'' specularColor=''0 0 0.5''/>
+        </Appearance>
+      </Shape>'
 ```
 
 Support
