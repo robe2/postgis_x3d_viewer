@@ -1,28 +1,38 @@
 <?php
 include_once('config.inc.php');
 header('Content-Type: image/png');
-
+$vals = array();
 // validate parameters
 foreach (array('sql', 'spatial_type', 'bvals') as $k) {
-	if (!isset($_GET[$k])) $_GET[$k] = '';
-	$_GET[$k] = trim($_GET[$k]);
-
+	if (!isset($_REQUEST[$k])) $_REQUEST[$k] = '';
+	$_REQUEST[$k] = trim($_REQUEST[$k]);
+	//print_r($_REQUEST);
 	switch ($k) {
 		case 'sql':
-			if (!strlen($_GET[$k])) {
-				$_GET[$k] = "ST_Buffer('MULTIPOINT((1 2),(3 4),(5 6))'::geometry,1)";
-				$_GET['spatial_type'] = 'geometry';
+			if (!strlen($_REQUEST[$k])) {
+				$vals[$k] = "ST_Buffer('MULTIPOINT((1 2),(3 4),(5 6))'::geometry,1)";
+				$vals['spatial_type'] = 'geometry';
+			}
+			else {
+				$vals[$k] = $_REQUEST[$k];
 			}
 			break;
 		case 'bvals':
-			$_GET[$k] = explode(',', $_GET[$k]);
-			$fn = create_function('&$v', '$v = intval(trim($v));$v = ($v < 0 ? 0 : ($v > 255 ? 1 : $v/255.0));'); /**x3d colors are in rgb where intensity is on scale of 0 to 1 **/
-			array_walk($_GET[$k], $fn);
+			$bvals = explode(',', $_REQUEST[$k]);
+			$cvals = array();
+			/**x3d colors are in rgb where intensity is on scale of 0 to 1 **/
+			function map_to_1($v) { $v = floatval(trim($v));$v = ($v < 0 ? 0 : ($v > 255 ? 1 : $v/255.0));};
+			for ($x = 0; $x <= 2; $x++) {
+			  $v = floatval(trim($bvals[$x]));
+			  $v = ($v < 0 ? 0 : ($v > 255 ? 1 : $v/255.0));
+			  $cvals[$x] = $v;
+			}  
+			$vals[$k] = $cvals;
 			break;
 		case 'spatial_type':
-			$_GET[$k] = strtolower($_GET[$k]);
-			if (!in_array($_GET[$k], array('raw', 'geometry')))
-				$_GET[$k] = 'geometry';
+			$vals[$k] = strtolower($_REQUEST[$k]);
+			if (!in_array($vals[$k], array('raw', 'geometry')))
+				$vals[$k] = 'geometry';
 			break;
 	}
 }
@@ -39,10 +49,12 @@ $dbconn = pg_connect($conn_str);
 if ($dbconn === false) return;
 
 // do query
-if ($_GET['spatial_type'] != 'raw')
-	$sql = "SELECT postgis_viewer_x3d('" . pg_escape_string($dbconn, $_GET['sql']) . "', 'geometry', ARRAY[" . implode(',', $_GET['bvals']) . "])";
-else
-	$sql = "SELECT postgis_viewer_x3d('" . pg_escape_string($dbconn, $_GET['sql']) . "', 'raw')";
+if ($vals['spatial_type'] != 'raw')
+	$sql = "SELECT postgis_viewer_x3d('" . pg_escape_string($dbconn, $vals['sql']) . "', 'geometry', ARRAY[" . implode(',', $vals['bvals']) . "])";
+else 
+	$sql = "SELECT postgis_viewer_x3d('" . pg_escape_string($dbconn, $vals['sql']) . "', 'raw')";
+
+//echo $sql;
 $result = pg_query($sql);
 if ($result === false) return;
 
