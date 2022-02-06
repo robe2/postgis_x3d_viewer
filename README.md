@@ -113,17 +113,29 @@ FROM (SELECT ROW_NUMBER() OVER() AS i, geom
       ) AS f;
 
 ```
+<img src="images/postgis_subdivide_extrude.png" />
 
+Showing off [ST_3DConvexHull](https://postgis.net/docs/manual-dev/ST_3DConvexHull.html) introduced in PostGIS 3.3. The words overlaid with the 3d convex hull
 ```
-SELECT string_agg('<Shape>' || ST_3DConvexHull(ST_Collect(f.geom) || 
+WITH f AS (SELECT i, ST_Extrude(geom, 0,0, i ) AS geom
+      FROM ST_Subdivide(ST_GeomFromWord('3DConvexHull'),5) WITH ORDINALITY AS sd(geom,i)
+      ),
+ combo AS (SELECT string_agg('<Shape>' || ST_AsX3D(f.geom) || 
     '<Appearance>
-          <Material diffuseColor="' || (0.02*i)::text || ' 0.8 0.2" specularColor="' || (0.05*i)::text || ' 0 0.5"/>
+          <Material diffuseColor="1 0 0" specularColor="0.8 0 0.5"/>
         </Appearance>
-    </Shape>', '')
-FROM (SELECT ROW_NUMBER() OVER() AS i, geom
-      FROM ST_Subdivide(ST_GeomFromWord('PostGIS'),10) AS geom
-      ) AS f;
+    </Shape>', '') AS x3d
+FROM f 
+UNION ALL 
+SELECT '<Shape>' || ST_AsX3D(ST_3DConvexHull(ST_Collect(f.geom) )) || '<Appearance>
+          <Material specularColor="1 1 0" transparency="0.2"/>
+        </Appearance></Shape>' AS x3d
+FROM f
+  )
+SELECT '<Transform>' || string_agg(x3d, ' ') || '</Transform>'
+FROM combo;
 ```
+<img src="images/3dconvexhull.png" />
 
 Support
 ------------
